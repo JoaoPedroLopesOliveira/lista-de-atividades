@@ -4,5 +4,7 @@ public class Main {
 
         Atividade1 atividade1 = new Atividade1();
         atividade1.executar();
+        Atividade2 atividade2 = new Atividade2();
+        atividade2.executar();
     }
 }

@@ -1,40 +1,46 @@
 import java.util.Random;
 import java.util.Scanner;
+
 public class Atividade4 {
-    public void executar(){
+    public void executar() {
 
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
         System.out.println("informe o tamanho do vetor aleatorio: ");
-        int v [] = new int[scanner.nextInt()];
+        int v[] = new int[scanner.nextInt()];
         int procurar;
 
-        quickSort(v, 0, v.length-1);
+
 
         for (int i = 0; i < v.length; i++) {
             v[i] = random.nextInt(10000);
         }
+        quickSort(v, 0, v.length - 1);
         System.out.println("informe o valor a ser procurado no vetor");
         procurar = scanner.nextInt();
-        if (buscaBiniaria(v,procurar, 0, (v.length), v.length-1) == true){
+        if (buscaBiniaria(v, procurar, 0, v.length - 1)) {
             System.out.println("O numero: " + procurar + " esta dentro do vetor");
-        }else {
+        } else {
             System.out.println("O numero: " + procurar + " não esta dentro do vetor");
         }
     }
 
-    public boolean buscaBiniaria(int v [], int procurar, int inicio, int meio, int fim){
-        if (procurar > v[meio]){
+    public boolean buscaBiniaria(int v[], int procurar, int inicio, int fim) {
+        if (inicio > fim || procurar < v[inicio] || procurar > v[fim]) {
+            return false;
+        }
 
-        }
-        if (procurar == v[meio]){
+        int meio = (inicio + fim) / 2;
+        if (procurar == v[meio]) {
             return true;
+        } else if (procurar < v[meio]) {
+            return buscaBiniaria(v, procurar, inicio, meio - 1);
+        } else {
+            return buscaBiniaria(v, procurar, meio + 1, fim);
         }
-        if (v[inicio] > v[procurar] || v[fim] < v[procurar]);
-        return false;
     }
 
-    public void quickSort(int vetor [], int inicio, int fim){
+    public void quickSort(int vetor[], int inicio, int fim) {
         if (inicio < fim) {
             int posicaoPivo = separar(vetor, inicio, fim);
             quickSort(vetor, inicio, posicaoPivo - 1);
@@ -42,7 +48,7 @@ public class Atividade4 {
         }
     }
 
-    public static int separar(int[] vetor, int inicio, int fim){
+    public static int separar(int[] vetor, int inicio, int fim) {
         int pivo = vetor[inicio];
         int i = inicio + 1, f = fim;
         while (i <= f) {

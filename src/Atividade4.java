@@ -50,7 +50,8 @@ public class Atividade4 {
 
     public static int separar(int[] vetor, int inicio, int fim) {
         int pivo = vetor[inicio];
-        int i = inicio + 1, f = fim;
+        int i = inicio + 1;
+        int f = fim;
         while (i <= f) {
             if (vetor[i] <= pivo)
                 i++;

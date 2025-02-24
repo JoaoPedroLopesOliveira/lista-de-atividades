@@ -1,68 +1,87 @@
 import java.util.Random;
 
 public class Atividade5 {
-    public void executar(){
-        int contadorquickaleatorio[] = {0};
-        int contadorquickDecresente[] = {0};
-        int aleatorio [] = new int[100];
-        int decresente [] = new int [100];
-        int copiavetor [] = new int [100];
-        for (int i = 0; i < decresente.length; i++) {
-            decresente [i] = decresente.length -i;
-        }
-        Random random = new Random(10);
-        for (int i = 0; i < aleatorio.length; i++){
-            aleatorio[i] = random.nextInt(100);
-        }
-        copiavetor = aleatorio;
-        selectionSort(copiavetor, 0,0);
-        copiavetor = decresente;
-        selectionSort(copiavetor, 0,0);
-        copiavetor = aleatorio;
-        quickSort(copiavetor,aleatorio.length-1, 0, contadorquickaleatorio);
-        copiavetor = decresente;
-        quickSort(copiavetor,decresente.length-1, 0, contadorquickDecresente);
+    public void executar() {
+        int [] aleatorio = new int[100];
+        int [] decrescente = new int[100];
+        int [] contadorQuick = {0};
+
+        randomizaVetor(aleatorio);
+        System.out.println("Selection Sort trocou no aleatório: " + selectionSort(aleatorio.clone(), 0, 0));
+
+        geraDecrescente(decrescente);
+        System.out.println("Selection Sort trocou no decrescente: " + selectionSort(decrescente.clone(), 0, 0));
+
+        quickSort(aleatorio.clone(), 0, aleatorio.length - 1, contadorQuick);
+        System.out.println("Quick Sort trocou no aleatório: " + contadorQuick[0]);
+
+        contadorQuick[0] = 0;
+        quickSort(decrescente.clone(), 0, decrescente.length - 1, contadorQuick);
+        System.out.println("Quick Sort trocou no decrescente: " + contadorQuick[0]);
     }
 
-    public int selectionSort(int vetor[], int inicio, int contador){
-        int n = vetor.length -1;
-        if (inicio >= n-1){
+    public void randomizaVetor(int [] vetor) {
+        Random random = new Random(42);
+        for (int i = 0; i < vetor.length; i++) {
+            vetor[i] = random.nextInt(1000);
+        }
+    }
+
+    public void geraDecrescente(int [] vetor) {
+        for (int i = 0; i < vetor.length; i++) {
+            vetor[i] = vetor.length - i;
+        }
+    }
+
+
+    public int selectionSort(int [] vetor, int inicio, int contador) {
+        int n = vetor.length;
+        if (inicio >= n - 1) {
             return contador;
         }
+
         for (int i = inicio + 1; i < n; i++) {
-            if (vetor [i] < vetor [inicio]){
+            if (vetor[i] < vetor[inicio]) {
                 int temp = vetor[i];
-                vetor[i] = vetor [inicio];
+                vetor[i] = vetor[inicio];
                 vetor[inicio] = temp;
                 contador++;
             }
         }
-        return selectionSort(vetor, inicio+1, contador);
+        return selectionSort(vetor, inicio + 1, contador);
     }
-    public void quickSort(int vetor[], int inicio, int fim, int [] contador){
-        separaQuick(vetor, inicio, fim, contador);
+
+
+    public void quickSort(int [] vetor, int inicio, int fim, int [] contador) {
+        if (inicio < fim) {
+            int pivoIndex = separaQuick(vetor, inicio, fim, contador);
+            quickSort(vetor, inicio, pivoIndex - 1, contador);
+            quickSort(vetor, pivoIndex + 1, fim, contador);
+        }
     }
-    public static int separaQuick(int vetor[], int inicio, int fim, int [] contador){
+
+
+    public static int separaQuick(int [] vetor, int inicio, int fim, int[] contador) {
         int pivo = vetor[fim];
-        int i = inicio+1;
-        int f = fim;
-        while (i <= f){
-            if(vetor[i] <= pivo){
+        int i = inicio - 1;
+
+        for (int j = inicio; j < fim; j++) {
+            if (vetor[j] < pivo) {
                 i++;
-            }else if (pivo < vetor[f]){
-                f--;
-            }
-            else {
-                int troca = vetor[i];
-                vetor [i] = vetor[f];
-                vetor[f] = troca;
-                i++;
-                f--;
+                trocar(vetor, i, j);
                 contador[0]++;
             }
         }
-        vetor[inicio] = vetor[f];
-        vetor [f] = pivo;
-        return f;
+
+        trocar(vetor, i + 1, fim);
+        contador[0]++;
+        return i + 1;
+    }
+
+
+    public static void trocar(int[] vetor, int i, int j) {
+        int temp = vetor[i];
+        vetor[i] = vetor[j];
+        vetor[j] = temp;
     }
 }
